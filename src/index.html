@@ -6,8 +6,157 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat</title>
   </head>
-  <body>
-    <!-- TODO: убрать содержимое -->
-    <div id="root">здесь будет чатик!</div>
+  <body id="root">
+
+    <div class="container">
+      <div class="users">
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Alexandra</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Petr</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Ivan</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name you">You</div>
+        </div>
+
+        <!-- переполнение контента: -->
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Alexandra</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Petr</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Ivan</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Alexandra</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Petr</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Ivan</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Petr</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Ivan</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Alexandra</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Petr</div>
+        </div>
+
+        <div class="user">
+          <div class="user__photo"></div>
+          <div class="user__name">Ivan</div>
+        </div>
+      </div>
+
+      <div class="chat">
+        <div class="messages">
+          <div class="message">
+            <div class="message__info">Alexandra, 23:04 20.03.2019</div>
+            <div class="message__text">I can\'t sleep...</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info you">You, 23:10 20.03.2019</div>
+            <div class="message__text">Listen this: https://youtu.be.xxxxxx</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Alexandra, 01:15 21.03.2019</div>
+            <div class="message__text">Thxx!! You help me! I listen this music 1 hour and I sleep. Now is my favorite music!</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Petr, 01:25 21.03.2019</div>
+            <div class="message__text">I subscribed just for that 😁😁😁</div>
+          </div>
+  
+          <!-- переполнение контента: -->
+          <div class="message">
+            <div class="message__info">Alexandra, 01:15 21.03.2019</div>
+            <div class="message__text">Thxx!! You help me! I listen this music 1 hour and I sleep. Now is my favorite music!</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Petr, 01:25 21.03.2019</div>
+            <div class="message__text">I subscribed just for that 😁😁😁</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Alexandra, 01:15 21.03.2019</div>
+            <div class="message__text">Thxx!! You help me! I listen this music 1 hour and I sleep. Now is my favorite music!</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Petr, 01:25 21.03.2019</div>
+            <div class="message__text">I subscribed just for that 😁😁😁</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Alexandra, 01:15 21.03.2019</div>
+            <div class="message__text">Thxx!! You help me! I listen this music 1 hour and I sleep. Now is my favorite music!</div>
+          </div>
+  
+          <div class="message">
+            <div class="message__info">Petr, 01:25 21.03.2019</div>
+            <div class="message__text">I subscribed just for that 😁😁😁</div>
+          </div>  
+        </div>
+        
+        <form class="chat__form">
+          <label class="chat__label visually-hidden" for="text">Введите сообщение:</label>
+          <input class="chat__input" id="text" placeholder="Введите сообщение" required>
+          <button class="chat__btn"></button>
+        </form>
+      </div>
+    </div>
+
+    <!-- <div class="modal"> -->
+    <div class="modal hidden">
+      <form class="modal__form">
+        <h2 class="modal__title">Выберите псевдоним</h2>
+        <label class="modal__label visually-hidden" for="name">Введите псевдоним</label>
+        <input class="modal__input" id="name" type="text" placeholder="Введите псевдоним" required>
+        <button class="modal__btn" type="submit">Продолжить</button>
+      </form>
+    </div>
   </body>
 </html>
