@@ -1,7 +1,7 @@
 import Controller from './Controller';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const root = document.getElementById('root');
-  const controller = new Controller(root);
+  const container = document.querySelector('.container');
+  const controller = new Controller(container);
   controller.init();
 });
