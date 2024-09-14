@@ -1,3 +1,5 @@
+import createRequest from '../libs/createRequest';
+
 import Chat from '../components/chat/Chat';
 import Modal from '../components/modal/Modal';
 import Users from '../components/users/Users';
@@ -13,7 +15,9 @@ export default class Controller {
 
   init() {
     this.renderModal();
-    this.renderPage();
+    // this.renderPage();
+
+    this.modal.submitEvent(this.addSubmitEvent.bind(this));
   }
 
   renderModal() {
@@ -38,5 +42,46 @@ export default class Controller {
     this.chat.addMessage('You, 23:10 20.03.2019', 'Listen this: https://youtu.be.xxxxxx'); // добавление сообщения
     this.chat.addMessage('Alexandra, 01:15 21.03.2019', 'Thxx!! You help me! I listen this music 1 hour and I sleep. Now is my favorite music!'); // добавление сообщения
     this.chat.addMessage('Petr, 01:25 21.03.2019', 'I subscribed just for that 😁😁😁'); // добавление сообщения
+  }
+
+  async addSubmitEvent(e) {
+    e.preventDefault();
+
+    const name = this.modal.getInputValue();
+
+    if (!name) {
+      // TODO: вывести подсказку, что поле не должно быть пустым!!!
+      return;
+    }
+
+    const options = {
+      method: 'POST',
+      url: '/new-user',
+      body: {
+        name,
+      },
+    };
+
+    // или data: { status: "ok", user { id: "...", name: "..." } }
+    // или data: { status: "error", message: "This name is already taken!" }
+    const data = await createRequest(options);
+    console.log('data: ', data); // NOTE: отладка
+
+    if (data.error) {
+      // TODO: добавить логику обработки ошибки сервера!!!
+      console.log('Ошибка сервера');
+      return;
+    }
+
+    if (data.status === 'error') {
+      // TODO: добавить логику для занятого никнейма!!!
+      console.log('data.message: ', data.message);
+      return;
+    }
+
+    if (data.status === 'ok') {
+      // TODO: работаем с юзером!!!
+      console.log('data.user: ', data.user);
+    }
   }
 }

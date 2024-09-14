@@ -48,4 +48,19 @@ export default class Modal {
   hide() {
     this.modal.classList.add('hidden');
   }
+
+  getInputValue() {
+    // FIXME: нужно ли сохранять содержимое инпута или можно сразу вернуть его без пробелов ???
+    this.input.value = this.input.value.trim();
+    return this.input.value;
+  }
+
+  submitEvent(handler) {
+    this.form.addEventListener('submit', handler);
+  }
+
+  removeForm() {
+    // TODO: добавить логику удаления формы из DOM !!!
+    this.input.value = ''; // очистка поля ввода - надо ли вообще ???
+  }
 }
