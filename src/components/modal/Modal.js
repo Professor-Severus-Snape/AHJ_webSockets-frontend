@@ -5,6 +5,7 @@ import './modal.css';
 //     <h2 class="modal__title">Выберите псевдоним</h2>
 //     <label class="modal__label visually-hidden" for="name">Введите псевдоним</label>
 //     <input class="modal__input" id="name" type="text" placeholder="Введите псевдоним" required>
+//     <p class="modal__tooltip modal__tooltip_transparent">Это имя уже занято! Выберите другое!</p>
 //     <button class="modal__btn" type="submit">Продолжить</button>
 //   </form>
 // </div>
@@ -33,12 +34,16 @@ export default class Modal {
     this.input.placeholder = 'Выберите псевдоним';
     this.input.required = true;
 
+    this.tooltip = document.createElement('p');
+    this.tooltip.classList.add('modal__tooltip', 'modal__tooltip_transparent');
+    this.tooltip.textContent = 'Это имя уже занято! Выберите другое!';
+
     this.button = document.createElement('button');
     this.button.classList.add('modal__btn');
     this.button.type = 'submit';
     this.button.textContent = 'Продолжить';
 
-    this.form.append(this.title, this.label, this.input, this.button);
+    this.form.append(this.title, this.label, this.input, this.tooltip, this.button);
 
     this.modal.append(this.form);
 
@@ -49,8 +54,16 @@ export default class Modal {
     this.modal.classList.add('hidden');
   }
 
+  showTooltip(text) {
+    this.tooltip.classList.remove('modal__tooltip_transparent');
+    this.tooltip.textContent = text;
+  }
+
+  hideTooltip() {
+    this.tooltip.classList.add('modal__tooltip_transparent');
+  }
+
   getInputValue() {
-    // FIXME: нужно ли сохранять содержимое инпута или можно сразу вернуть его без пробелов ???
     this.input.value = this.input.value.trim();
     return this.input.value;
   }
@@ -60,7 +73,6 @@ export default class Modal {
   }
 
   removeForm() {
-    // TODO: добавить логику удаления формы из DOM !!!
-    this.input.value = ''; // очистка поля ввода - надо ли вообще ???
+    this.modal.remove();
   }
 }

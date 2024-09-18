@@ -12,6 +12,11 @@ export default async function createRequest(options) {
       body: JSON.stringify(body),
     });
 
+    // проверка подключения к серверу:
+    if (response.status === 204) {
+      return { status: response.status, message: 'Server found!' };
+    }
+
     return await response.json(); // response.status = 200 (ok) || 409 (conflict)
   } catch (err) {
     return { error: true, status: 520 };
