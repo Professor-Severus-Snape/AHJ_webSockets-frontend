@@ -81,6 +81,8 @@ export default class Chat {
     message.append(info, text);
 
     this.messages.append(message);
+
+    message.scrollIntoView(); // пролистывание к новому сообщению
   }
 
   resetForm() {

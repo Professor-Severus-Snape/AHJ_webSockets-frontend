@@ -27,6 +27,7 @@ export default class Users {
 
     const photo = document.createElement('div');
     photo.classList.add('user__photo');
+    photo.textContent = nickName.slice(0, 1).toUpperCase();
 
     const name = document.createElement('div');
     name.classList.add('user__name');
