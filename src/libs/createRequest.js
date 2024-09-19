@@ -1,5 +1,6 @@
 export default async function createRequest(options) {
-  const baseUrl = 'http://localhost:7070'; // TODO: сменить сервер!!!
+  // const baseUrl = 'http://localhost:7070'; // локальный сервер
+  const baseUrl = 'https://ahj-websockets-backend.onrender.com'; // сервер на Render
 
   const { method, url, body } = options;
 
