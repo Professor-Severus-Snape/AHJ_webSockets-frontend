@@ -26,15 +26,15 @@ export default class Controller {
     }
 
     this.renderModal();
-    this.modal.submitEvent(this.addSubmitEvent.bind(this));
   }
 
   renderModal() {
     this.modal = new Modal(); // отрисовка модального окна для запроса никнейма юзера
+    this.modal.submitEvent(this.addModalSubmitEvent.bind(this));
   }
 
-  async addSubmitEvent(e) {
-    e.preventDefault();
+  async addModalSubmitEvent(event) {
+    event.preventDefault();
 
     const name = this.modal.getInputValue();
 
@@ -54,7 +54,7 @@ export default class Controller {
       return;
     }
 
-    // ---------- занятый никнейм: ----------
+    // -------------------- занятый никнейм: -------------------
     // data: { status: "error", message: "This name is already taken!" }
     if (data.status === 'error') {
       this.modal.showTooltip('Это имя уже занято! Выберите другое!'); // показать на 2 сек, что имя занято
@@ -62,30 +62,113 @@ export default class Controller {
       return;
     }
 
-    // TODO:
-    // ---------- работа с юзером!!! ----------
+    // ------------------- работа с юзером!!! ------------------
     // data: { status: "ok", user { id: "...", name: "..." } }
     if (data.status === 'ok') {
-      this.modal.removeForm(); // удалить модалку из DOM
-      this.renderPage();
+      this.currentId = data.user.id; // свой id
+      this.currentName = data.user.name; // своё имя
+
+      window.addEventListener('beforeunload', this.exit.bind(this)); // перед закрытием страницы...
+
+      this.modal.removeForm(); // удаляем модалку из DOM
+      this.renderPage(); // отрисовываем страницу чата
     }
   }
 
-  // TODO: временная заготовка:
+  exit() {
+    const msg = {
+      type: 'exit',
+      user: { id: this.currentId, name: this.currentName },
+    };
+
+    this.ws.send(JSON.stringify(msg)); // отправка данных через ws-соединение
+  }
+
   renderPage() {
-    this.container.classList.remove('hidden'); // отрисовка контейнера для контента
-    this.users = new Users(this.container); // отрисовка контейнера с юзерами
+    this.container.classList.remove('hidden'); // отрисовка контейнера для всего контента
+    this.usersContainer = new Users(this.container); // отрисовка контейнера для юзеров
+    this.chatContainer = new Chat(this.container); // отрисовка контейнера для сообщений
 
-    this.users.addUser('Alexandra'); // добавление юзера
-    this.users.addUser('Petr'); // добавление юзера
-    this.users.addUser('Ivan'); // добавление юзера
-    this.users.addUser('You'); // добавление юзера
+    this.chatContainer.addSubmitEvent(this.addChatSubmitEvent.bind(this)); // 'submit'
 
-    this.chat = new Chat(this.container); // отрисовка контейнера с сообщениями
+    this.connectToWebSocket(); // подключаем сокеты
+  }
 
-    this.chat.addMessage('Alexandra, 23:04 20.03.2019', 'I can\'t sleep...'); // добавление сообщения
-    this.chat.addMessage('You, 23:10 20.03.2019', 'Listen this: https://youtu.be.xxxxxx'); // добавление сообщения
-    this.chat.addMessage('Alexandra, 01:15 21.03.2019', 'Thxx!! You help me! I listen this music 1 hour and I sleep. Now is my favorite music!'); // добавление сообщения
-    this.chat.addMessage('Petr, 01:25 21.03.2019', 'I subscribed just for that 😁😁😁'); // добавление сообщения
+  connectToWebSocket() {
+    this.ws = new WebSocket('ws://localhost:7070/ws');
+
+    // событие 'open' - возникает только 1 раз на каждой странице
+    // this.ws.addEventListener('open', (event) => {
+    //   console.log('ws open', event);
+    // });
+
+    // событие 'message' - при входе каждого нового юзера и при ws.send()
+    this.ws.addEventListener('message', (event) => {
+      // data = [ { id: '...', name: '...' }, ... ] <- массив юзеров, если type !== 'send'
+      // data = { type: "send", msg: "...", user: {id: "...", name: "..."}, created: "..." }
+      const data = JSON.parse(event.data);
+
+      // отрисовка сообщений у всех юзеров:
+      if (data.type === 'send') {
+        const name = data.user.id === this.currentId ? 'You' : data.user.name;
+        const info = `${name}, ${data.created}`;
+        this.chatContainer.addMessage(info, data.msg, name === 'You'); // 'Julia, 20:50 19.09.2024', 'Hello!', true
+        this.chatContainer.resetForm(); // очищаем форму
+        return;
+      }
+
+      // обновление списка юзеров при входе/выходе каждого юзера:
+      this.usersContainer.deleteUsers(); // 1. полная очистка списка юзеров
+
+      data.forEach((user) => {
+        const name = user.id === this.currentId ? 'You' : user.name;
+        this.usersContainer.addUser(name); // 2. добавление заново всех юзеров, которые онлайн
+      });
+    });
+
+    // this.ws.addEventListener('error', (event) => {
+    //   console.error('ws error', event);
+    // });
+
+    // this.ws.addEventListener('close', (event) => {
+    //   console.warn('ws close', event);
+    // });
+  }
+
+  addChatSubmitEvent(event) {
+    event.preventDefault();
+
+    const message = this.chatContainer.getMessage();
+
+    if (!message) {
+      this.chatContainer.resetForm(); // очищаем форму
+      return;
+    }
+
+    this.sendMsg(message);
+  }
+
+  sendMsg(message) {
+    const date = new Date(Date.now()).toLocaleString('ru-Ru', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    const formattedDate = date.split(', ').reverse().join(' ');
+
+    const msg = {
+      type: 'send',
+      msg: message,
+      user: {
+        id: this.currentId,
+        name: this.currentName,
+      },
+      created: formattedDate,
+    };
+
+    this.ws.send(JSON.stringify(msg)); // отправка данных через ws-соединение
   }
 }

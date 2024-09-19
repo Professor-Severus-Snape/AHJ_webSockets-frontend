@@ -1,4 +1,8 @@
 .chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+
   flex-grow: 1;
 
   padding: 10px;
@@ -16,6 +20,15 @@
   overflow-y: scroll;
 }
 
+.message {
+  width: 70%;
+}
+
+.message_right {
+  margin-left: auto;
+  text-align: end;
+}
+
 .message:not(:last-child) {
   margin-bottom: 30px;
 }
@@ -24,6 +37,10 @@
   margin-bottom: 10px;
 
   color: rgb(128, 128, 128);
+}
+
+.message__info_you {
+  color: red;
 }
 
 .chat__form {

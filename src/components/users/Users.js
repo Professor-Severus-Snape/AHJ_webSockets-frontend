@@ -32,8 +32,16 @@ export default class Users {
     name.classList.add('user__name');
     name.textContent = nickName;
 
+    if (nickName === 'You') {
+      name.classList.add('user__name_you');
+    }
+
     user.append(photo, name);
 
     this.users.append(user);
+  }
+
+  deleteUsers() {
+    [...this.users.children].forEach((child) => child.remove());
   }
 }

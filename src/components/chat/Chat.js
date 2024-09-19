@@ -53,13 +53,26 @@ export default class Chat {
     this.container.append(this.chat);
   }
 
-  addMessage(msgInfo, msgText) {
+  addSubmitEvent(handler) {
+    this.form.addEventListener('submit', handler);
+  }
+
+  getMessage() {
+    return this.input.value.trim();
+  }
+
+  addMessage(msgInfo, msgText, isYours) {
     const message = document.createElement('div');
     message.classList.add('message');
 
     const info = document.createElement('div');
     info.classList.add('message__info');
     info.textContent = msgInfo;
+
+    if (isYours) {
+      message.classList.add('message_right');
+      info.classList.add('message__info_you');
+    }
 
     const text = document.createElement('div');
     text.classList.add('message__text');
@@ -68,5 +81,9 @@ export default class Chat {
     message.append(info, text);
 
     this.messages.append(message);
+  }
+
+  resetForm() {
+    this.form.reset();
   }
 }

@@ -26,3 +26,7 @@
   border-radius: 50%;
   background-color: pink;
 }
+
+.user__name_you {
+  color: red;
+}
