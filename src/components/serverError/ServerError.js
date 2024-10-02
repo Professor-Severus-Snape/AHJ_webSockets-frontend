@@ -1,6 +1,6 @@
 import './serverError.css';
 
-// <p class="serverError">Ошибка сервера - 522. Попробуйте зайти позже...</p>
+// <p class="serverError">Ошибка сервера - 520. Попробуйте зайти позже...</p>
 export default class ServerError {
   constructor(status) {
     this.element = document.createElement('p');

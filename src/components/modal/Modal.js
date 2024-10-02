@@ -43,7 +43,13 @@ export default class Modal {
     this.button.type = 'submit';
     this.button.textContent = 'Продолжить';
 
-    this.form.append(this.title, this.label, this.input, this.tooltip, this.button);
+    this.form.append(
+      this.title,
+      this.label,
+      this.input,
+      this.tooltip,
+      this.button,
+    );
 
     this.modal.append(this.form);
 
